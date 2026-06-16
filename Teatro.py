@@ -1,29 +1,53 @@
 import os
+import pickle
 
-pecas = {
+pecas = {}
+try:
+    arq_pecas = open("pecas.dat", "rb")
+    pecas = pickle.load(arq_pecas)
+except:
+    pecas = {
      '100' : ["Romeu e Julieta", "Drama", "2h30m", "01/07/2026"],
      '101' : ["Hamlet", "Tragédia", "3h", "05/02/2026"],
      '102' : ["O Fantasma da Ópera", "Musical", "2h45m", "10/07/2026"],
      '103' : ["O Auto da Compadecida", "Comédia", "2h15m", "20/07/2026"],
      '104' : ["As Bruxas de Salem", "Suspense", "2h", "28/07/2026"]
-}
+    }
+    arq_pecas = open("pecas.dat", "wb")
+    pickle.dump(pecas, arq_pecas)
+    arq_pecas.close()
 
-ingressos = {
+ingressos = {}
+try:
+    arq_ingressos = open("ingressos.dat", "rb")
+    ingressos = pickle.load(arq_ingressos)
+except:
+    ingressos = {
      '200' : ["Flavius Gorgonio", "Romeu e Julieta", "01/07/2026"],
      '201' : ["João Victor", "Hamlet", "05/02/2026"],
      '202' : ["Ana Beateiz", "O Fantasma da Ópera", "10/07/2026"],
      '203' : ["Carlos Henrique", "O Auto da Compadecida", "20/07/2026"],
      '204' : ["Fernanda Costa", "As Bruxas de Salem", "28/07/2026"]
-}
+    }
+    arq_ingressos = open("ingressos.dat", "wb")
+    pickle.dump(ingressos, arq_ingressos)
+    arq_ingressos.close()
 
-atores = {
+atores = {}
+try:
+    arq_atores = open("atores.dat", "rb")
+    atores = pickle.load(arq_atores)
+except:
+    atores = {
      '300' : ["Matheus Augusto", "19 anos", "Masculino", "Romeu e Julieta"],
      '301' : ["Aline Silva", "18 anos", "Feminino", "Romeu e Julieta"],
      '302' : ["Davi Lucas", "22 anos", "Masculino", "O Fantasma da Ópera"],
      '303' : ["Natalia Costa", "32 anos", "Feminino", "O Auto da Compadecida"],
      '304' : ["Lucas Mendes", "25 anos", "Masculino", "Hamlet"]
-
-}
+    }
+    arq_atores = open("atores.dat", "wb")
+    pickle.dump(atores, arq_atores)
+    arq_atores.close()
 
 resp = ""
 while resp != '0':
@@ -433,6 +457,18 @@ while resp != '0':
 
 
 print("Fim")
+
+arq_pecas = open("pecas.dat", "wb")
+pickle.dump(pecas, arq_pecas)
+arq_pecas.close()
+
+arq_ingressos = open("ingressos.dat", "wb")
+pickle.dump(ingressos, arq_ingressos)
+arq_ingressos.close()
+
+arq_atores = open("atores.dat", "wb")
+pickle.dump(atores, arq_atores)
+arq_atores.close()
 
 
 
