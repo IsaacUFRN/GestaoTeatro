@@ -1,10 +1,19 @@
 import os
-import pickle
 
 pecas = {}
 try:
-    arq_pecas = open("pecas.dat", "rb")
-    pecas = pickle.load(arq_pecas)
+    arq_pecas = open("pecas.csv", "rt", encoding="utf-8")
+    for linha in arq_pecas:
+        linha = linha.strip()
+        if linha:
+            campos = linha.split(",")
+            idpeca = campos[0]
+            nome = campos[1]
+            genero = campos[2]
+            duracao = campos[3]
+            estreia = campos[4]
+            pecas[idpeca] = [nome, genero, duracao, estreia]
+    arq_pecas.close()
 except:
     pecas = {
      '100' : ["Romeu e Julieta", "Drama", "2h30m", "01/07/2026"],
@@ -13,40 +22,63 @@ except:
      '103' : ["O Auto da Compadecida", "Comédia", "2h15m", "20/07/2026"],
      '104' : ["As Bruxas de Salem", "Suspense", "2h", "28/07/2026"]
     }
-    arq_pecas = open("pecas.dat", "wb")
-    pickle.dump(pecas, arq_pecas)
+    arq_pecas = open("pecas.csv", "wt", encoding="utf-8")
+    for idpeca, dados in pecas.items():
+        arq_pecas.write(f"{idpeca},{dados[0]},{dados[1]},{dados[2]},{dados[3]}\n")   
     arq_pecas.close()
 
 ingressos = {}
 try:
-    arq_ingressos = open("ingressos.dat", "rb")
-    ingressos = pickle.load(arq_ingressos)
+    arq_ingressos = open("ingressos.csv", "rt", encoding="utf-8")
+    for linha in arq_ingressos:
+        linha = linha.strip()
+        if linha:
+            campos = linha.split(",")
+            idingresso = campos[0]
+            nome = campos[1]
+            cpf = campos[2]
+            peca = campos[3]
+            data = campos[4]
+            ingressos[idingresso] = [nome, cpf, peca, data]
+    arq_ingressos.close()
 except:
     ingressos = {
-     '200' : ["Flavius Gorgonio", "Romeu e Julieta", "01/07/2026"],
-     '201' : ["João Victor", "Hamlet", "05/02/2026"],
-     '202' : ["Ana Beateiz", "O Fantasma da Ópera", "10/07/2026"],
-     '203' : ["Carlos Henrique", "O Auto da Compadecida", "20/07/2026"],
-     '204' : ["Fernanda Costa", "As Bruxas de Salem", "28/07/2026"]
+     'ING01' : ["Flavius Gorgonio", "12222222222", "Romeu e Julieta", "01/07/2026"],
+     'ING02' : ["João Victor", "13333333333", "Hamlet", "05/02/2026"],
+     'ING03' : ["Ana Beateiz", "14444444444", "O Fantasma da Ópera", "10/07/2026"],
+     'ING04' : ["Carlos Henrique", "15555555555", "O Auto da Compadecida", "20/07/2026"],
+     'ING05' : ["Fernanda Costa", "16666666666", "As Bruxas de Salem", "28/07/2026"]
     }
-    arq_ingressos = open("ingressos.dat", "wb")
-    pickle.dump(ingressos, arq_ingressos)
+    arq_ingressos = open("ingressos.csv", "wt", encoding="utf-8")
+    for idingresso, dados in ingressos.items():
+        arq_ingressos.write(f"{idingresso},{dados[0]},{dados[1]},{dados[2]},{dados[3]}\n")
     arq_ingressos.close()
 
 atores = {}
 try:
-    arq_atores = open("atores.dat", "rb")
-    atores = pickle.load(arq_atores)
+    arq_atores = open("atores.csv", "rt", encoding="utf-8")
+    for linha in arq_atores:
+        linha = linha.strip()
+        if linha:
+            campos = linha.split(",")
+            cpf = campos[0]
+            nome = campos[1]
+            idade = campos[2]
+            sexo = campos[3]
+            peca = campos[4]
+            atores[cpf] = [nome, idade, sexo, peca]
+    arq_atores.close()
 except:
     atores = {
-     '300' : ["Matheus Augusto", "19 anos", "Masculino", "Romeu e Julieta"],
-     '301' : ["Aline Silva", "18 anos", "Feminino", "Romeu e Julieta"],
-     '302' : ["Davi Lucas", "22 anos", "Masculino", "O Fantasma da Ópera"],
-     '303' : ["Natalia Costa", "32 anos", "Feminino", "O Auto da Compadecida"],
-     '304' : ["Lucas Mendes", "25 anos", "Masculino", "Hamlet"]
+     '11111111111' : ["Matheus Augusto", "19 anos", "Masculino", "Romeu e Julieta"],
+     '22222222222' : ["Aline Silva", "18 anos", "Feminino", "Romeu e Julieta"],
+     '33333333333' : ["Davi Lucas", "22 anos", "Masculino", "O Fantasma da Ópera"],
+     '44444444444' : ["Natalia Costa", "32 anos", "Feminino", "O Auto da Compadecida"],
+     '55555555555' : ["Lucas Mendes", "25 anos", "Masculino", "Hamlet"]
     }
-    arq_atores = open("atores.dat", "wb")
-    pickle.dump(atores, arq_atores)
+    arq_atores = open("atores.csv", "wt", encoding="utf-8")
+    for cpf, dados in atores.items():
+        arq_atores.write(f"{cpf},{dados[0]},{dados[1]},{dados[2]},{dados[3]}\n")
     arq_atores.close()
 
 resp = ""
@@ -146,6 +178,7 @@ while resp != '0':
                 nome = input("Nome da peça: ")
                 genero = input("Gênero da peça: ")
                 duracao = input("Duração da peça: ")
+                estreia = input("Data de estreia da peça: ")
 
                 pecas[idpeca] = [nome, genero, duracao, estreia]          
 
@@ -207,6 +240,7 @@ while resp != '0':
             print("↓ Preencha as informações abaixo ↓")
                 
             nome_cliente = input("Nome do cliente: ")
+            cpf_cliente = input("CPF do cliente: ")
             idingresso = input("ID do ingresso: ")
             id_peca = input("Digite o ID da peça: ")
 
@@ -221,7 +255,7 @@ while resp != '0':
 
                 confirma = input("\nConfirme a compra do ingresso. (s/n): ")
                 if confirma.lower() == 's':
-                    ingressos[idingresso] = [nome_cliente, nome_peca, data_peca]
+                    ingressos[idingresso] = [nome_cliente, cpf_cliente, nome_peca, data_peca]
                     print("\nIngresso vendido com sucesso!")
                 else:
                     print("\nCompra cancelada.")
@@ -236,34 +270,38 @@ while resp != '0':
 
             if idingresso in ingressos:
                 print("\nIngresso encontrado!")
-                print("\nNome do cliente:", ingressos[idnome][0])
-                print("Nome da peça:", ingressos[idnome][1])
-                print("Data da peça:", ingressos[idnome][2])
+                print("\nNome do cliente:", ingressos[idingresso][0])
+                print("CPF do cliente:", ingressos[idingresso][1])
+                print("Nome da peça:", ingressos[idingresso][2])
+                print("Data da peça:", ingressos[idingresso][3])
             else:
                 print("\nIngresso não encontrado.")
             input("\nTecle <ENTER> para continuar...")
         
         elif resp_ingr == '3':
             os.system('cls' if os.name == 'nt' else 'clear')
-            idnome = input("Digite o nome ou ID do ingresso: ")
-            if idnome in ingressos:
+            idingresso = input("Digite o ID do ingresso: ")
+            if idingresso in ingressos:
                 print("\nInformações atuais do ingresso:")
-                print("\nNome do cliente:", ingressos[idnome][0])
-                print("Nome da peça:", ingressos[idnome][1])
-                print("Data da peça:", ingressos[idnome][2])
+                print("\nNome do cliente:", ingressos[idingresso][0])
+                print("CPF do cliente:", ingressos[idingresso][1])
+                print("Nome da peça:", ingressos[idingresso][2])
+                print("Data da peça:", ingressos[idingresso][3])
+
                 print("\nDigite as novas informações do ingresso:")
                 nome_cliente = input("Nome do cliente: ")
+                cpf_cliente = input("CPF do cliente: ")
                 idingresso = input("ID do ingresso: ")
-                idnome_peca = input("Nome ou ID da peça: ")
-                idnome_peca = pecas[idnome_peca][0]
-                estreia = ingressos[idnome][2]
-                
-                if idnome_peca in pecas:
+                idpeca = input("ID da peça: ")
+                idpeca = pecas[idpeca][0]
+                estreia = ingressos[idingresso][3]
+
+                if idpeca in pecas:
                     
-                    print("\nNome da peça:", pecas[idnome_peca][0])
-                    print("Gênero da peça:", pecas[idnome_peca][1])
-                    print("Duração da peça:", pecas[idnome_peca][2])
-                    print("Data de estreia da peça:", pecas[idnome_peca][3])
+                    print("\nNome da peça:", pecas[idpeca][0])
+                    print("Gênero da peça:", pecas[idpeca][1])
+                    print("Duração da peça:", pecas[idpeca][2])
+                    print("Data de estreia da peça:", pecas[idpeca][3])
                 else:
                     print("\nPeça não encontrada. O ingresso não pode ser atualizado.")
                     input("\nTecle <ENTER> para continuar...")
@@ -271,7 +309,7 @@ while resp != '0':
 
                 confirma = input("\nConfirme a atualização do ingresso para a peça acima. (s/n): ")
                 if confirma.lower() == 's':
-                    ingressos[idnome] = [nome_cliente, idnome_peca, estreia]
+                    ingressos[idingresso] = [nome_cliente, cpf_cliente, idpeca, estreia]
                     print("\nIngresso atualizado com sucesso.")
                     print("Ingressos", ingressos)
                 else:
@@ -282,15 +320,15 @@ while resp != '0':
             
         elif resp_ingr == '4':
             os.system('cls' if os.name == 'nt' else 'clear')
-            idnome = input("Digite o nome ou ID do ingresso: ")
-            if idnome in ingressos:
-                print("\nNome do cliente:", ingressos[idnome][0])
-                print("Nome da peça:", ingressos[idnome][1])
-                print("Data da peça:", ingressos[idnome][2])
-                
+            idingresso = input("Digite o ID do ingresso: ")
+            if idingresso in ingressos:
+                print("\nNome do cliente:", ingressos[idingresso][0])
+                print("Nome da peça:", ingressos[idingresso][1])
+                print("Data da peça:", ingressos[idingresso][2])
+
                 confirma = input("\nTem certeza que deseja cancelar esse ingresso? (s/n): ")
                 if confirma.lower() == 's':
-                    del ingressos[idnome]
+                    del ingressos[idingresso]
                     print("\nIngresso cancelado com sucesso.")
                     print("Ingressos", ingressos)
             else:
@@ -329,22 +367,22 @@ while resp != '0':
             idade = input("Idade do ator/atriz: ")
             genero = input("Gênero do ator/atriz: ")
             atorpeca = input("Peça em que o ator/atriz atua: ")
-            idator = input("ID do ator/atriz: ")
+            cpfator = input("CPF do ator/atriz: ")
 
-            atores[idator] = [nome, idade, genero, atorpeca]
+            atores[cpfator] = [nome, idade, genero, atorpeca]
             print("Atores:", atores)
             print("\nAtor/atriz cadastrado com sucesso!")
             input("\nTecle <ENTER> para continuar...")
 
         elif resp_elenco == '2':
             os.system('cls' if os.name == 'nt' else 'clear')
-            idator = input("Digite o ID do ator/atriz: ")
+            cpfator = input("Digite o CPF do ator/atriz: ")
 
-            if idator in atores:
-                print("\nNome do ator/atriz:", atores[idator][0])
-                print("Idade do ator/atriz:", atores[idator][1])
-                print("Gênero do ator/atriz:", atores[idator][2])
-                print("Peça em que o ator/atriz atua:", atores[idator][3])
+            if cpfator in atores:
+                print("\nNome do ator/atriz:", atores[cpfator][0])
+                print("Idade do ator/atriz:", atores[cpfator][1])
+                print("Gênero do ator/atriz:", atores[cpfator][2])
+                print("Peça em que o ator/atriz atua:", atores[cpfator][3])
             else:
                 print("\nAtor/atriz não encontrado.")
                         
@@ -352,21 +390,21 @@ while resp != '0':
 
         elif resp_elenco == '3':
             os.system('cls' if os.name == 'nt' else 'clear')
-            idator = input("Digite o ID do ator/atriz: ")
-            if idator in atores:
+            cpfator = input("Digite o CPF do ator/atriz: ")
+            if cpfator in atores:
                 print("\nInformações atuais do ator/atriz:")
-                print("\nNome do ator/atriz:", atores[idator][0])
-                print("Idade do ator/atriz:", atores[idator][1])
-                print("Gênero do ator/atriz:", atores[idator][2])
-                print("Peça em que o ator/atriz atua:", atores[idator][3])
+                print("\nNome do ator/atriz:", atores[cpfator][0])
+                print("Idade do ator/atriz:", atores[cpfator][1])
+                print("Gênero do ator/atriz:", atores[cpfator][2])
+                print("Peça em que o ator/atriz atua:", atores[cpfator][3])
                 print("\nDigite as novas informações do ator/atriz:")
                 nome = input("Nome do ator/atriz: ")
                 idade = input("Idade do ator/atriz: ")
                 genero = input("Gênero do ator/atriz: ")
                 atorpeca = input("Peça em que o ator/atriz atua: ")
-                idator = input("ID do ator/atriz: ")
+                cpfator = input("CPF do ator/atriz: ")
 
-                atores[idator] = [nome, idade, genero, atorpeca]          
+                atores[cpfator] = [nome, idade, genero, atorpeca]          
 
                 print("\nO cadastro do ator/atriz", nome, "foi atualizado.")
                 print("Atores:", atores)
@@ -376,16 +414,16 @@ while resp != '0':
         
         elif resp_elenco == '4':
             os.system('cls' if os.name == 'nt' else 'clear')
-            idator = input("Digite o ID do ator/atriz: ")
-            if idator in atores:
-                print("\nNome do ator/atriz:", atores[idator][0])
-                print("Idade do ator/atriz:", atores[idator][1])
-                print("Gênero do ator/atriz:", atores[idator][2])
-                print("Peça em que o ator/atriz atua:", atores[idator][3])
+            cpfator = input("Digite o CPF do ator/atriz: ")
+            if cpfator in atores:
+                print("\nNome do ator/atriz:", atores[cpfator][0])
+                print("Idade do ator/atriz:", atores[cpfator][1])
+                print("Gênero do ator/atriz:", atores[cpfator][2])
+                print("Peça em que o ator/atriz atua:", atores[cpfator][3])
 
                 confirma = input("\nTem certeza que deseja remover esse ator/atriz? (s/n): ")
                 if confirma.lower() == 's':
-                    del atores[idator]
+                    del atores[cpfator ]
                     print("\nAtor/atriz removido com sucesso.")
                     print("Atores:", atores)
             else:
@@ -393,19 +431,19 @@ while resp != '0':
             input("\nTecle <ENTER> para continuar...")
        input("\nTecle <ENTER> para continuar...")
    elif resp == '4':
-               print()
+               print(os.system('cls' if os.name == 'nt' else 'clear'))
                print("""
-
 
        ╔════════════════════════════════╗
        ║                                ║
        ║        Modulo Relatório        ║
        ║                                ║
-       ║     1 - Gerar relatório        ║
-       ║     2 - Visualizar relatório   ║
-       ║     3 - Exportar relatório     ║
-       ║     4 - Deletar relatório      ║
-       ║     5 - Retornar               ║
+       ║     1 - Lista de peças         ║
+       ║     2 - Lista de ingressos     ║
+       ║     3 - Lista de atores        ║
+       ║     4 - Ingressos por peça     ║
+       ║     5 - Elenco por peça        ║
+       ║     0 - Retornar               ║
        ║                                ║
        ╚════════════════════════════════╝     
                   
@@ -413,7 +451,7 @@ while resp != '0':
                os.system('cls' if os.name == 'nt' else 'clear')
                input("Tecle <ENTER> para continuar...")
    elif resp == '5':
-               print()
+               print(os.system('cls' if os.name == 'nt' else 'clear'))
                print("""
        ╔════════════════════════════════════════╗
        ║                                        ║
@@ -425,7 +463,7 @@ while resp != '0':
                os.system('cls' if os.name == 'nt' else 'clear')
                input("Tecle <ENTER> para continuar...")
    elif resp == '0':
-               print()
+               print(os.system('cls' if os.name == 'nt' else 'clear'))
                print("""
 
 
@@ -458,16 +496,19 @@ while resp != '0':
 
 print("Fim")
 
-arq_pecas = open("pecas.dat", "wb")
-pickle.dump(pecas, arq_pecas)
+arq_pecas = open("pecas.csv", "wt", encoding="utf-8")
+for idpeca, dados in pecas.items():
+    arq_pecas.write(f"{idpeca},{dados[0]},{dados[1]},{dados[2]},{dados[3]}\n")
 arq_pecas.close()
 
-arq_ingressos = open("ingressos.dat", "wb")
-pickle.dump(ingressos, arq_ingressos)
+arq_ingressos = open("ingressos.csv", "wt", encoding="utf-8")
+for idingresso, dados in ingressos.items():
+    arq_ingressos.write(f"{idingresso},{dados[0]},{dados[1]},{dados[2]},{dados[3]}\n")
 arq_ingressos.close()
 
-arq_atores = open("atores.dat", "wb")
-pickle.dump(atores, arq_atores)
+arq_atores = open("atores.csv", "wt", encoding="utf-8")
+for cpf, dados in atores.items():
+    arq_atores.write(f"{cpf},{dados[0]},{dados[1]},{dados[2]},{dados[3]}\n")
 arq_atores.close()
 
 
