@@ -28,7 +28,7 @@ def lista_ingressos(ingressos, pecas):
                 try:
                     preco_limpo = str(preco_bruto).replace("R$", "").replace(",", ".").strip()
                     faturamento += float(preco_limpo)
-                except ValueError:
+                except:
     
                     pass
             else:
@@ -94,4 +94,4 @@ def elenco_por_peca(atores, pecas):
             print("Nenhum ator vinculado a esta peça ainda.")
     else:
         print("Peça não encontrada.")
-    input("\nTecle <ENTER> para continuar...")
+    input("\nTecle <ENTER> para continuar...") 
