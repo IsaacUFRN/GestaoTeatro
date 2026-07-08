@@ -12,12 +12,20 @@ def validar_cpf(cpf):
     return True
 
 
+def validar_cpf2(cpf):
+    cpf_limpo = cpf.replace(".", "").replace("-", "").strip()
+    if len(cpf_limpo) == 11 and cpf_limpo.isdigit():
+        return True
+    return False
+
+
 def validar_data(data_texto):
     try:
         datetime.strptime(data_texto, '%d/%m/%Y')
         return True
     except:
         return False
+
 
 def validar_preco(preco):
     try:

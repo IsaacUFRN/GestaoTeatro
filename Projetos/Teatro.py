@@ -1,6 +1,6 @@
 import os
 
-from validacao import (validar_cpf, validar_data, validar_preco)
+from validacao import (validar_cpf, validar_cpf2, validar_data, validar_preco)
 
 from persistencia import (recupera_pecas, recupera_ingressos, 
                           recupera_atores, grava_pecas, grava_ingressos, grava_atores)
@@ -351,11 +351,22 @@ while resp != '0':
 
         if resp_elenco == '1':
             print("Bem-vindo ao módulo de cadastramento de atores")
-            
-            cpfator = input("Digite o CPF/ID do ator/atriz: ")
-            while cpfator in atores:
-                print("\nEsse CPF/ID já está cadastrado.")
-                cpfator = input("Digite outro CPF/ID do ator/atriz: ")
+            cpfvalido = False
+            cpfator = ""
+
+            while not cpfvalido:
+                cpf_input = input("Digite o CPF/ID do ator/atriz: ")
+                
+                if validar_cpf(cpf_input) or validar_cpf2(cpf_input):
+                    cpf_limpo = cpf_input.replace(".", "").replace("-", "").strip()
+                    
+                    if cpf_limpo in atores:
+                        print("\nEsse CPF/ID já está cadastrado.")
+                    else:
+                        cpfator = cpf_limpo
+                        cpfvalido = True
+                else:
+                    print("\nCPF/ID inválido. Digite novamente.")
 
             nome = input("Nome do ator/atriz: ")
             idade = input("Idade do ator/atriz: ")
@@ -367,6 +378,8 @@ while resp != '0':
                 atorpeca = input("Peça em que o ator/atriz atua (ID da peça): ")
 
             atores[cpfator] = [nome, idade, genero, atorpeca, True]
+            
+            grava_atores(atores)
             
             print("\nAtor/atriz cadastrado com sucesso!")
             input("\nTecle <ENTER> para continuar...")
@@ -397,16 +410,31 @@ while resp != '0':
 
         elif resp_elenco == '3':
             os.system('cls' if os.name == 'nt' else 'clear')
-            cpfator = input("Digite o CPF/ID do ator/atriz que deseja alterar: ")
+            cpfvalido = False
+            cpfator = ""
 
-            if cpfator in atores:
+            while not cpfvalido:
+                cpf_input = input("Digite o CPF/ID do ator/atriz que deseja alterar: ")
+                
+                if validar_cpf(cpf_input) or validar_cpf2(cpf_input):
+                    cpf_limpo = cpf_input.replace(".", "").replace("-", "").strip()
+                    
+                    if cpf_limpo in atores:
+                        cpfator = cpf_limpo
+                        cpfvalido = True
+                    else:
+                        print("\nAtor/atriz não encontrado no sistema.")
+                        cpfvalido = True
+                else:
+                    print("\nCPF/ID inválido. Digite novamente.")
+
+            if cpfator != "":
                 idpeca_atual = atores[cpfator][3]
-                nome_peca = pecas[idpeca_atual][0] 
                 
                 if idpeca_atual in pecas:
-                   nome_peca = pecas[idpeca_atual][0]
+                    nome_peca = pecas[idpeca_atual][0]
                 else:
-                   nome_peca = "Não encontrada"
+                    nome_peca = "Não encontrada"
 
                 print("Informações atuais do ator/atriz:")
                 print("\nNome:", atores[cpfator][0])
@@ -425,12 +453,12 @@ while resp != '0':
                     atorpeca = input("Peça em que o ator/atriz atua (ID da peça): ")
 
                 atores[cpfator] = [nome, idade, genero, atorpeca, True]
+                
+                grava_atores(atores)
+                
                 print("\nCadastro do ator/atriz atualizado com sucesso!")
-
-            else:
-                print("\nAtor/atriz não encontrado.")
+                
             input("\nTecle <ENTER> para continuar...")
-        
         elif resp_elenco == '4':
             os.system('cls' if os.name == 'nt' else 'clear')
             cpfator = input("Digite o CPF/ID do ator/atriz que deseja remover/inativar: ")
@@ -502,7 +530,7 @@ while resp != '0':
        ║      SISTEMA DE GESTÃO  DE TEATRO      ║
        ║       Desenvolvedor: Isaac Bruno       ║
        ║        Licenca Publica Geral GNU       ║
-       ║       www.gnu.org/licenses/gpl.html    ║                                        
+       ║       www.gnu.org/licenses/gpl.html    ║                                        ║
        ║                                        ║
        ╚════════════════════════════════════════╝
                """)
